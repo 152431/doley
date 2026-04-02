@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/devices/devices",
+    "pages/control/control",
+    "pages/monitor/monitor",
+    "pages/scenes/scenes",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarTitleText": "物联网控制平台",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4a90d9",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/devices/devices",
+        "text": "设备",
+        "iconPath": "assets/icons/device.png",
+        "selectedIconPath": "assets/icons/device-active.png"
+      },
+      {
+        "pagePath": "pages/monitor/monitor",
+        "text": "监控",
+        "iconPath": "assets/icons/monitor.png",
+        "selectedIconPath": "assets/icons/monitor-active.png"
+      },
+      {
+        "pagePath": "pages/scenes/scenes",
+        "text": "场景",
+        "iconPath": "assets/icons/scene.png",
+        "selectedIconPath": "assets/icons/scene-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

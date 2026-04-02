@@ -1,0 +1,385 @@
+.container {
+  padding-bottom: 120rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 40rpx 24rpx;
+  margin: -24rpx -24rpx 24rpx -24rpx;
+  color: #ffffff;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+}
+
+.greeting-text {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.greeting-sub {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.header-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.action-btn .iconfont {
+  font-size: 36rpx;
+  color: #ffffff;
+}
+
+.badge {
+  position: absolute;
+  top: -4rpx;
+  right: -4rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  background: #ff4d4f;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8rpx;
+}
+
+.status-overview {
+  background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+  color: #ffffff;
+}
+
+.overview-title {
+  font-size: 28rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.9;
+}
+
+.overview-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  opacity: 0.8;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.quick-actions {
+  margin-top: 24rpx;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24rpx;
+}
+
+.action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.action-icon {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+
+.action-icon .iconfont {
+  font-size: 44rpx;
+  color: #ffffff;
+}
+
+.light-icon {
+  background: linear-gradient(135deg, #ffd93d 0%, #ff9a3c 100%);
+}
+
+.env-icon {
+  background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+}
+
+.servo-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.security-icon {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.action-name {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.card-header .card-title {
+  margin-bottom: 0;
+}
+
+.refresh-btn, .more-btn {
+  font-size: 24rpx;
+  color: #4a90d9;
+}
+
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.sensor-item {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.sensor-icon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sensor-icon .iconfont {
+  font-size: 32rpx;
+  color: #ffffff;
+}
+
+.sensor-icon.temperature {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+}
+
+.sensor-icon.humidity {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.sensor-icon.air {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.sensor-icon.light {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.sensor-info {
+  flex: 1;
+}
+
+.sensor-name {
+  font-size: 24rpx;
+  color: #999999;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.sensor-value-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.sensor-value {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.sensor-unit {
+  font-size: 22rpx;
+  color: #999999;
+  margin-left: 4rpx;
+}
+
+.sensor-trend {
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.trend-up {
+  color: #52c41a;
+}
+
+.trend-down {
+  color: #ff4d4f;
+}
+
+.device-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.device-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+}
+
+.device-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.device-icon .iconfont {
+  font-size: 36rpx;
+  color: #ffffff;
+}
+
+.device-icon.light {
+  background: linear-gradient(135deg, #ffd93d 0%, #ff9a3c 100%);
+}
+
+.device-icon.environment {
+  background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+}
+
+.device-icon.servo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.device-icon.security {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.device-icon.sensor {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-name {
+  font-size: 28rpx;
+  color: #333333;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.device-status {
+  font-size: 22rpx;
+}
+
+.device-status.online {
+  color: #52c41a;
+}
+
+.device-status.offline {
+  color: #999999;
+}
+
+.scene-scroll {
+  white-space: nowrap;
+}
+
+.scene-list {
+  display: inline-flex;
+  gap: 20rpx;
+  padding: 4rpx 0;
+}
+
+.scene-card {
+  width: 200rpx;
+  padding: 24rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scene-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
+.scene-icon .iconfont {
+  font-size: 40rpx;
+  color: #ffffff;
+}
+
+.scene-name {
+  font-size: 26rpx;
+  color: #333333;
+  margin-bottom: 4rpx;
+}
+
+.scene-desc {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.iconfont {
+  font-family: "iconfont";
+}

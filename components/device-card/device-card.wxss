@@ -1,0 +1,176 @@
+.device-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.device-card.small {
+  padding: 16rpx;
+}
+
+.device-card.large {
+  padding: 32rpx;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.device-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.device-icon.small {
+  width: 56rpx;
+  height: 56rpx;
+}
+
+.device-icon.large {
+  width: 96rpx;
+  height: 96rpx;
+}
+
+.device-icon .iconfont {
+  font-size: 36rpx;
+  color: #ffffff;
+}
+
+.device-icon.small .iconfont {
+  font-size: 28rpx;
+}
+
+.device-icon.large .iconfont {
+  font-size: 48rpx;
+}
+
+.device-icon.light {
+  background: linear-gradient(135deg, #e8e8e8 0%, #d9d9d9 100%);
+}
+
+.device-icon.light.on {
+  background: linear-gradient(135deg, #ffd93d 0%, #ff9a3c 100%);
+  box-shadow: 0 4rpx 16rpx rgba(255, 217, 61, 0.4);
+}
+
+.device-icon.sensor {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.device-icon.environment {
+  background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+}
+
+.device-icon.security {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.device-icon.servo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+}
+
+.status-dot.online {
+  background: #52c41a;
+  box-shadow: 0 0 8rpx rgba(82, 196, 26, 0.5);
+}
+
+.status-dot.offline {
+  background: #d9d9d9;
+}
+
+.status-dot.warning {
+  background: #faad14;
+  box-shadow: 0 0 8rpx rgba(250, 173, 20, 0.5);
+}
+
+.status-dot.error {
+  background: #ff4d4f;
+  box-shadow: 0 0 8rpx rgba(255, 77, 79, 0.5);
+}
+
+.card-body {
+  margin-bottom: 16rpx;
+}
+
+.device-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  display: block;
+  margin-bottom: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.device-room {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.device-status {
+  font-size: 22rpx;
+}
+
+.device-status.online {
+  color: #52c41a;
+}
+
+.device-status.offline {
+  color: #999999;
+}
+
+.device-status.warning {
+  color: #faad14;
+}
+
+.device-status.error {
+  color: #ff4d4f;
+}
+
+.device-value {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  display: flex;
+  align-items: baseline;
+}
+
+.device-value .value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+.device-value .unit {
+  font-size: 20rpx;
+  color: #999999;
+  margin-left: 4rpx;
+}
+
+.iconfont {
+  font-family: "iconfont";
+}

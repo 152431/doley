@@ -1,0 +1,31 @@
+<view class="slider-control">
+  <view class="slider-header">
+    <view class="slider-icon" style="background: {{iconBg}}">
+      <text class="iconfont icon-{{icon}}"></text>
+    </view>
+    <view class="slider-info">
+      <text class="slider-label">{{label}}</text>
+      <view class="slider-value-row">
+        <text class="slider-value">{{currentValue}}</text>
+        <text class="slider-unit">{{unit}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="slider-body">
+    <slider 
+      class="custom-slider"
+      min="{{min}}" 
+      max="{{max}}" 
+      value="{{currentValue}}"
+      step="{{step}}"
+      block-size="{{blockSize}}"
+      activeColor="{{activeColor}}"
+      backgroundColor="{{backgroundColor}}"
+      bindchange="onChange"
+      bindchanging="onChanging"
+    />
+    <view class="slider-marks" wx:if="{{showMarks}}">
+      <text class="mark" wx:for="{{marks}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+</view>

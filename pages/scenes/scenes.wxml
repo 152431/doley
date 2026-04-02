@@ -1,0 +1,209 @@
+<view class="container">
+  <view class="scene-header">
+    <view class="header-info">
+      <text class="header-title">智能场景</text>
+      <text class="header-desc">一键执行多个设备联动</text>
+    </view>
+    <view class="add-btn" bindtap="showAddScene">
+      <text class="iconfont icon-plus"></text>
+    </view>
+  </view>
+
+  <view class="recommended-section">
+    <view class="section-title">推荐场景</view>
+    <scroll-view class="recommended-scroll" scroll-x>
+      <view class="recommended-list">
+        <view class="recommended-card" wx:for="{{recommendedScenes}}" wx:key="id" bindtap="applyRecommended" data-id="{{item.id}}">
+          <view class="rec-card-bg" style="background: {{item.gradient}}"></view>
+          <view class="rec-card-content">
+            <view class="rec-icon">
+              <text class="iconfont icon-{{item.icon}}"></text>
+            </view>
+            <text class="rec-name">{{item.name}}</text>
+            <text class="rec-desc">{{item.description}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="my-scenes">
+    <view class="section-header">
+      <text class="section-title">我的场景</text>
+      <text class="scene-count">{{myScenes.length}}个场景</text>
+    </view>
+
+    <view class="scene-list" wx:if="{{myScenes.length > 0}}">
+      <view class="scene-item" wx:for="{{myScenes}}" wx:key="id">
+        <view class="scene-main" bindtap="executeScene" data-id="{{item.id}}">
+          <view class="scene-icon" style="background: {{item.color}}">
+            <text class="iconfont icon-{{item.icon}}"></text>
+          </view>
+          <view class="scene-info">
+            <text class="scene-name">{{item.name}}</text>
+            <view class="scene-meta">
+              <text class="scene-devices">{{item.deviceCount}}个设备</text>
+              <text class="scene-time" wx:if="{{item.lastExecuted}}">上次执行: {{item.lastExecuted}}</text>
+            </view>
+          </view>
+          <view class="scene-status {{item.enabled ? 'enabled' : 'disabled'}}">
+            <text>{{item.enabled ? '已启用' : '已禁用'}}</text>
+          </view>
+        </view>
+        <view class="scene-actions">
+          <view class="action-item" bindtap="editScene" data-id="{{item.id}}">
+            <text class="iconfont icon-edit"></text>
+            <text>编辑</text>
+          </view>
+          <view class="action-item" bindtap="toggleSceneEnabled" data-id="{{item.id}}">
+            <text class="iconfont icon-{{item.enabled ? 'pause' : 'play'}}"></text>
+            <text>{{item.enabled ? '禁用' : '启用'}}</text>
+          </view>
+          <view class="action-item danger" bindtap="deleteScene" data-id="{{item.id}}">
+            <text class="iconfont icon-delete"></text>
+            <text>删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-container" wx:else>
+      <image class="empty-icon" src="/assets/icons/empty-scene.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无场景，点击上方添加</text>
+    </view>
+  </view>
+
+  <view class="automation-section">
+    <view class="section-header">
+      <text class="section-title">自动化规则</text>
+      <text class="add-link" bindtap="showAddAutomation">添加规则</text>
+    </view>
+
+    <view class="automation-list" wx:if="{{automationList.length > 0}}">
+      <view class="automation-item" wx:for="{{automationList}}" wx:key="id">
+        <view class="auto-header">
+          <view class="auto-trigger">
+            <view class="trigger-icon {{item.triggerType}}">
+              <text class="iconfont icon-{{item.triggerIcon}}"></text>
+            </view>
+            <view class="trigger-info">
+              <text class="trigger-name">{{item.triggerName}}</text>
+              <text class="trigger-condition">{{item.condition}}</text>
+            </view>
+          </view>
+          <switch checked="{{item.enabled}}" color="#4a90d9" bindchange="toggleAutomation" data-id="{{item.id}}" />
+        </view>
+        <view class="auto-body">
+          <view class="auto-arrow">
+            <text class="iconfont icon-arrow-down"></text>
+          </view>
+          <view class="auto-actions">
+            <view class="auto-action" wx:for="{{item.actions}}" wx:for-item="action" wx:key="index">
+              <text class="action-text">{{action}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-container" wx:else>
+      <text class="empty-text">暂无自动化规则</text>
+    </view>
+  </view>
+
+  <view class="schedule-section">
+    <view class="section-header">
+      <text class="section-title">定时任务</text>
+    </view>
+
+    <view class="schedule-list" wx:if="{{scheduleList.length > 0}}">
+      <view class="schedule-item" wx:for="{{scheduleList}}" wx:key="id">
+        <view class="schedule-time">
+          <text class="time-value">{{item.time}}</text>
+          <text class="time-period">{{item.period}}</text>
+        </view>
+        <view class="schedule-info">
+          <text class="schedule-name">{{item.name}}</text>
+          <text class="schedule-repeat">{{item.repeat}}</text>
+        </view>
+        <switch checked="{{item.enabled}}" color="#4a90d9" bindchange="toggleSchedule" data-id="{{item.id}}" />
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="add-scene-modal" wx:if="{{showModal}}" bindtap="hideAddScene">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">{{editingScene ? '编辑场景' : '创建场景'}}</text>
+      <text class="modal-close" bindtap="hideAddScene">×</text>
+    </view>
+    <scroll-view class="modal-body" scroll-y>
+      <view class="form-item">
+        <text class="form-label">场景名称</text>
+        <input class="form-input" placeholder="请输入场景名称" bindinput="onInputSceneName" value="{{newScene.name}}" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">场景图标</text>
+        <view class="icon-selector">
+          <view class="icon-option {{newScene.icon === item.icon ? 'active' : ''}}" 
+            wx:for="{{iconOptions}}" wx:key="icon" bindtap="selectSceneIcon" data-icon="{{item.icon}}">
+            <view class="icon-preview" style="background: {{item.color}}">
+              <text class="iconfont icon-{{item.icon}}"></text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="form-label">场景颜色</text>
+        <view class="color-selector">
+          <view class="color-option {{newScene.color === item ? 'active' : ''}}" 
+            wx:for="{{colorOptions}}" wx:key="*this" style="background: {{item}}"
+            bindtap="selectSceneColor" data-color="{{item}}">
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="form-label">添加设备动作</text>
+        <view class="device-actions">
+          <view class="device-action-item" wx:for="{{newScene.devices}}" wx:key="deviceId">
+            <view class="device-info">
+              <text class="device-name">{{item.deviceName}}</text>
+              <text class="device-action">{{item.actionName}}</text>
+            </view>
+            <text class="remove-btn" bindtap="removeDeviceFromScene" data-index="{{index}}">×</text>
+          </view>
+          <view class="add-device-btn" bindtap="showDeviceSelector">
+            <text class="iconfont icon-plus"></text>
+            <text>添加设备</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="modal-footer">
+      <view class="btn-secondary" bindtap="hideAddScene">取消</view>
+      <view class="btn-primary" bindtap="saveScene">保存场景</view>
+    </view>
+  </view>
+</view>
+
+<view class="device-selector-modal" wx:if="{{showDeviceSelector}}" bindtap="hideDeviceSelector">
+  <view class="selector-content" catchtap="">
+    <view class="selector-header">
+      <text class="selector-title">选择设备</text>
+      <text class="modal-close" bindtap="hideDeviceSelector">×</text>
+    </view>
+    <view class="selector-body">
+      <view class="device-option" wx:for="{{availableDevices}}" wx:key="id" bindtap="selectDevice" data-device="{{item}}">
+        <view class="device-icon {{item.type}}">
+          <text class="iconfont icon-{{item.type}}"></text>
+        </view>
+        <view class="device-info">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-room">{{item.room}}</text>
+        </view>
+        <text class="iconfont icon-arrow-right"></text>
+      </view>
+    </view>
+  </view>
+</view>

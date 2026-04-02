@@ -1,0 +1,10 @@
+<view class="empty-state">
+  <view class="empty-icon">
+    <text class="iconfont icon-{{icon}}"></text>
+  </view>
+  <text class="empty-title">{{title}}</text>
+  <text class="empty-desc" wx:if="{{description}}">{{description}}</text>
+  <view class="empty-action" wx:if="{{actionText}}" bindtap="onAction">
+    <text>{{actionText}}</text>
+  </view>
+</view>
