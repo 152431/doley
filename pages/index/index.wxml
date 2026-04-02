@@ -1,0 +1,141 @@
+<view class="container">
+  <view class="header">
+    <view class="header-top">
+      <view class="greeting">
+        <text class="greeting-text">您好，{{userInfo.nickname || '用户'}}</text>
+        <text class="greeting-sub">欢迎回到物联网控制平台</text>
+      </view>
+      <view class="header-actions">
+        <view class="action-btn" bindtap="scanDevice">
+          <text class="iconfont icon-scan"></text>
+        </view>
+        <view class="action-btn" bindtap="goToNotifications">
+          <text class="iconfont icon-bell"></text>
+          <view class="badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="status-overview card">
+    <view class="overview-title">设备概览</view>
+    <view class="overview-stats">
+      <view class="stat-item">
+        <view class="stat-value">{{deviceStats.total}}</view>
+        <view class="stat-label">设备总数</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value status-online">{{deviceStats.online}}</view>
+        <view class="stat-label">在线设备</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value status-warning">{{deviceStats.warning}}</view>
+        <view class="stat-label">告警设备</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value status-offline">{{deviceStats.offline}}</view>
+        <view class="stat-label">离线设备</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="quick-actions card">
+    <view class="card-title">快捷操作</view>
+    <view class="action-grid">
+      <view class="action-item" bindtap="goToLightControl">
+        <view class="action-icon light-icon">
+          <text class="iconfont icon-light"></text>
+        </view>
+        <text class="action-name">灯光控制</text>
+      </view>
+      <view class="action-item" bindtap="goToEnvironmentControl">
+        <view class="action-icon env-icon">
+          <text class="iconfont icon-temperature"></text>
+        </view>
+        <text class="action-name">环境控制</text>
+      </view>
+      <view class="action-item" bindtap="goToServoControl">
+        <view class="action-icon servo-icon">
+          <text class="iconfont icon-servo"></text>
+        </view>
+        <text class="action-name">舵机控制</text>
+      </view>
+      <view class="action-item" bindtap="goToSecurityControl">
+        <view class="action-icon security-icon">
+          <text class="iconfont icon-security"></text>
+        </view>
+        <text class="action-name">安防监控</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="sensor-data card">
+    <view class="card-header">
+      <text class="card-title">实时传感器数据</text>
+      <text class="refresh-btn" bindtap="refreshSensorData">刷新</text>
+    </view>
+    <view class="sensor-grid">
+      <view class="sensor-item" wx:for="{{sensorData}}" wx:key="id">
+        <view class="sensor-icon {{item.type}}">
+          <text class="iconfont icon-{{item.type}}"></text>
+        </view>
+        <view class="sensor-info">
+          <text class="sensor-name">{{item.name}}</text>
+          <view class="sensor-value-row">
+            <text class="sensor-value">{{item.value}}</text>
+            <text class="sensor-unit">{{item.unit}}</text>
+          </view>
+        </view>
+        <view class="sensor-trend {{item.trend > 0 ? 'trend-up' : 'trend-down'}}">
+          <text class="iconfont icon-{{item.trend > 0 ? 'up' : 'down'}}"></text>
+          <text>{{item.trend > 0 ? '+' : ''}}{{item.trend}}%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="recent-devices card">
+    <view class="card-header">
+      <text class="card-title">最近使用设备</text>
+      <text class="more-btn" bindtap="goToDevices">查看全部</text>
+    </view>
+    <view class="device-list" wx:if="{{recentDevices.length > 0}}">
+      <view class="device-item" wx:for="{{recentDevices}}" wx:key="id" bindtap="goToDeviceControl" data-id="{{item.id}}">
+        <view class="device-icon {{item.type}}">
+          <text class="iconfont icon-{{item.type}}"></text>
+        </view>
+        <view class="device-info">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-status {{item.status}}">{{item.statusText}}</text>
+        </view>
+        <view class="device-control">
+          <switch checked="{{item.isOn}}" color="#4a90d9" bindchange="toggleDevice" data-id="{{item.id}}" />
+        </view>
+      </view>
+    </view>
+    <view class="empty-container" wx:else>
+      <text class="empty-text">暂无设备，点击添加</text>
+    </view>
+  </view>
+
+  <view class="active-scenes card">
+    <view class="card-header">
+      <text class="card-title">活跃场景</text>
+      <text class="more-btn" bindtap="goToScenes">管理场景</text>
+    </view>
+    <scroll-view class="scene-scroll" scroll-x>
+      <view class="scene-list">
+        <view class="scene-card" wx:for="{{activeScenes}}" wx:key="id" bindtap="executeScene" data-id="{{item.id}}">
+          <view class="scene-icon" style="background: {{item.color}}">
+            <text class="iconfont icon-{{item.icon}}"></text>
+          </view>
+          <text class="scene-name">{{item.name}}</text>
+          <text class="scene-desc">{{item.deviceCount}}个设备</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

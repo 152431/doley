@@ -1,0 +1,116 @@
+<view class="container">
+  <view class="search-bar">
+    <view class="search-input">
+      <text class="iconfont icon-search"></text>
+      <input placeholder="搜索设备名称" bindinput="onSearch" value="{{searchText}}" />
+    </view>
+    <view class="add-btn" bindtap="showAddDevice">
+      <text class="iconfont icon-plus"></text>
+    </view>
+  </view>
+
+  <view class="filter-tabs">
+    <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">
+      全部
+      <text class="tab-count">{{deviceStats.total}}</text>
+    </view>
+    <view class="tab-item {{currentTab === 'light' ? 'active' : ''}}" bindtap="switchTab" data-tab="light">
+      灯光
+      <text class="tab-count">{{deviceStats.light}}</text>
+    </view>
+    <view class="tab-item {{currentTab === 'sensor' ? 'active' : ''}}" bindtap="switchTab" data-tab="sensor">
+      传感器
+      <text class="tab-count">{{deviceStats.sensor}}</text>
+    </view>
+    <view class="tab-item {{currentTab === 'environment' ? 'active' : ''}}" bindtap="switchTab" data-tab="environment">
+      环境
+      <text class="tab-count">{{deviceStats.environment}}</text>
+    </view>
+    <view class="tab-item {{currentTab === 'security' ? 'active' : ''}}" bindtap="switchTab" data-tab="security">
+      安防
+      <text class="tab-count">{{deviceStats.security}}</text>
+    </view>
+    <view class="tab-item {{currentTab === 'servo' ? 'active' : ''}}" bindtap="switchTab" data-tab="servo">
+      舵机
+      <text class="tab-count">{{deviceStats.servo}}</text>
+    </view>
+  </view>
+
+  <view class="device-section">
+    <view class="section-header" wx:if="{{groupedDevices.length > 0}}">
+      <text class="section-title">设备列表</text>
+      <text class="section-count">共{{filteredDevices.length}}个设备</text>
+    </view>
+
+    <view class="device-grid" wx:if="{{filteredDevices.length > 0}}">
+      <view class="device-card" wx:for="{{filteredDevices}}" wx:key="id" bindtap="goToDeviceDetail" data-id="{{item.id}}">
+        <view class="device-header">
+          <view class="device-icon {{item.type}}">
+            <text class="iconfont icon-{{item.type}}"></text>
+          </view>
+          <view class="device-status-dot {{item.status}}"></view>
+        </view>
+        <view class="device-body">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-room">{{item.room || '未分配房间'}}</text>
+        </view>
+        <view class="device-footer">
+          <text class="device-status {{item.status}}">{{item.statusText}}</text>
+          <switch checked="{{item.isOn}}" color="#4a90d9" catchtap="" catchchange="toggleDevice" data-id="{{item.id}}" />
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-container" wx:else>
+      <image class="empty-icon" src="/assets/icons/empty-device.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无设备</text>
+      <view class="btn-primary" bindtap="showAddDevice">添加设备</view>
+    </view>
+  </view>
+
+  <view class="fab-btn" bindtap="showAddDevice">
+    <text class="iconfont icon-plus"></text>
+  </view>
+</view>
+
+<view class="add-modal" wx:if="{{showModal}}" bindtap="hideAddDevice">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">添加设备</text>
+      <text class="modal-close" bindtap="hideAddDevice">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">设备名称</text>
+        <input class="form-input" placeholder="请输入设备名称" bindinput="onInputName" value="{{newDevice.name}}" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">设备类型</text>
+        <picker mode="selector" range="{{deviceTypes}}" range-key="label" bindchange="onSelectType">
+          <view class="form-picker">
+            <text>{{deviceTypes[newDevice.typeIndex].label || '请选择设备类型'}}</text>
+            <text class="iconfont icon-arrow-right"></text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">所属房间</text>
+        <picker mode="selector" range="{{rooms}}" range-key="name" bindchange="onSelectRoom">
+          <view class="form-picker">
+            <text>{{rooms[newDevice.roomIndex].name || '请选择房间'}}</text>
+            <text class="iconfont icon-arrow-right"></text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">设备ID</text>
+        <input class="form-input" placeholder="请输入或扫描设备ID" bindinput="onInputDeviceId" value="{{newDevice.deviceId}}" />
+        <text class="scan-btn" bindtap="scanDeviceId">扫描</text>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="btn-secondary" bindtap="hideAddDevice">取消</view>
+      <view class="btn-primary" bindtap="addDevice">确认添加</view>
+    </view>
+  </view>
+</view>

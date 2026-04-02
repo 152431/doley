@@ -1,0 +1,294 @@
+<view class="container">
+  <view class="device-header card">
+    <view class="header-main">
+      <view class="device-icon {{deviceInfo.type}}">
+        <text class="iconfont icon-{{deviceInfo.type}}"></text>
+      </view>
+      <view class="device-info">
+        <text class="device-name">{{deviceInfo.name}}</text>
+        <view class="device-meta">
+          <text class="device-status {{deviceInfo.status}}">{{deviceInfo.statusText}}</text>
+          <text class="device-room">{{deviceInfo.room}}</text>
+        </view>
+      </view>
+      <switch checked="{{deviceInfo.isOn}}" color="#4a90d9" bindchange="toggleDevice" />
+    </view>
+  </view>
+
+  <!-- 灯光控制 -->
+  <view class="control-section" wx:if="{{deviceInfo.type === 'light'}}">
+    <view class="card">
+      <view class="card-title">亮度调节</view>
+      <view class="brightness-control">
+        <view class="brightness-icon">
+          <text class="iconfont icon-sun"></text>
+        </view>
+        <slider class="brightness-slider" min="0" max="100" value="{{lightSettings.brightness}}" 
+          block-size="24" activeColor="#ffd93d" bindchange="setBrightness" />
+        <text class="brightness-value">{{lightSettings.brightness}}%</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">色温调节</view>
+      <view class="colortemp-control">
+        <view class="colortemp-preview" style="background: linear-gradient(90deg, #ff9a3c, #ffd93d, #ffffff, #87ceeb, #4a90d9);"></view>
+        <slider class="colortemp-slider" min="2700" max="6500" value="{{lightSettings.colorTemp}}" 
+          block-size="24" activeColor="#4a90d9" bindchange="setColorTemp" />
+        <text class="colortemp-value">{{lightSettings.colorTemp}}K</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">颜色选择</view>
+      <view class="color-picker">
+        <view class="color-item {{lightSettings.color === item.value ? 'active' : ''}}" 
+          wx:for="{{colorOptions}}" wx:key="value" 
+          style="background: {{item.value}}"
+          bindtap="selectColor" data-color="{{item.value}}">
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">灯光场景</view>
+      <view class="scene-grid">
+        <view class="scene-item {{lightSettings.scene === item.id ? 'active' : ''}}" 
+          wx:for="{{lightScenes}}" wx:key="id" bindtap="selectLightScene" data-id="{{item.id}}">
+          <view class="scene-icon" style="background: {{item.color}}">
+            <text class="iconfont icon-{{item.icon}}"></text>
+          </view>
+          <text class="scene-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 环境控制 -->
+  <view class="control-section" wx:if="{{deviceInfo.type === 'environment'}}">
+    <view class="card">
+      <view class="card-title">温度控制</view>
+      <view class="temp-control">
+        <view class="temp-display">
+          <text class="temp-value">{{environmentSettings.temperature}}</text>
+          <text class="temp-unit">°C</text>
+        </view>
+        <view class="temp-buttons">
+          <view class="temp-btn minus" bindtap="decreaseTemp">
+            <text>-</text>
+          </view>
+          <view class="temp-btn plus" bindtap="increaseTemp">
+            <text>+</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">运行模式</view>
+      <view class="mode-grid">
+        <view class="mode-item {{environmentSettings.mode === item.value ? 'active' : ''}}" 
+          wx:for="{{environmentModes}}" wx:key="value" bindtap="selectMode" data-mode="{{item.value}}">
+          <view class="mode-icon">
+            <text class="iconfont icon-{{item.icon}}"></text>
+          </view>
+          <text class="mode-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">风速调节</view>
+      <view class="fan-control">
+        <view class="fan-item {{environmentSettings.fanSpeed === item.value ? 'active' : ''}}" 
+          wx:for="{{fanSpeeds}}" wx:key="value" bindtap="setFanSpeed" data-speed="{{item.value}}">
+          <text class="fan-name">{{item.name}}</text>
+          <view class="fan-bars">
+            <view class="fan-bar" wx:for="{{item.bars}}" wx:key="index" wx:for-item="bar"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 舵机控制 -->
+  <view class="control-section" wx:if="{{deviceInfo.type === 'servo'}}">
+    <view class="card">
+      <view class="card-title">舵机角度控制</view>
+      <view class="servo-control" wx:for="{{servoChannels}}" wx:key="id">
+        <view class="servo-header">
+          <text class="servo-name">{{item.name}}</text>
+          <text class="servo-angle">{{item.angle}}°</text>
+        </view>
+        <slider class="servo-slider" min="0" max="180" value="{{item.angle}}" 
+          block-size="24" activeColor="#667eea" bindchange="setServoAngle" 
+          data-id="{{item.id}}" data-index="{{index}}" />
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">运动速度</view>
+      <view class="speed-control">
+        <text class="speed-label">慢</text>
+        <slider class="speed-slider" min="1" max="10" value="{{servoSettings.speed}}" 
+          block-size="24" activeColor="#667eea" bindchange="setServoSpeed" />
+        <text class="speed-label">快</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">预设动作</view>
+      <view class="action-grid">
+        <view class="action-item" wx:for="{{servoActions}}" wx:key="id" bindtap="executeServoAction" data-id="{{item.id}}">
+          <view class="action-icon">
+            <text class="iconfont icon-{{item.icon}}"></text>
+          </view>
+          <text class="action-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">手动控制</view>
+      <view class="manual-control">
+        <view class="control-pad">
+          <view class="control-row">
+            <view class="control-btn" bindtap="servoMove" data-direction="forward">
+              <text class="iconfont icon-up"></text>
+            </view>
+          </view>
+          <view class="control-row">
+            <view class="control-btn" bindtap="servoMove" data-direction="left">
+              <text class="iconfont icon-left"></text>
+            </view>
+            <view class="control-btn center" bindtap="servoStop">
+              <text class="iconfont icon-stop"></text>
+            </view>
+            <view class="control-btn" bindtap="servoMove" data-direction="right">
+              <text class="iconfont icon-right"></text>
+            </view>
+          </view>
+          <view class="control-row">
+            <view class="control-btn" bindtap="servoMove" data-direction="backward">
+              <text class="iconfont icon-down"></text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 安防控制 -->
+  <view class="control-section" wx:if="{{deviceInfo.type === 'security'}}">
+    <view class="card">
+      <view class="card-title">实时监控</view>
+      <view class="camera-preview">
+        <image class="camera-image" src="{{securitySettings.streamUrl}}" mode="aspectFill" wx:if="{{securitySettings.streamUrl}}"></image>
+        <view class="camera-placeholder" wx:else>
+          <text class="iconfont icon-camera"></text>
+          <text>暂无视频流</text>
+        </view>
+        <view class="camera-controls">
+          <view class="cam-ctrl-btn" bindtap="takeSnapshot">
+            <text class="iconfont icon-camera"></text>
+          </view>
+          <view class="cam-ctrl-btn" bindtap="toggleRecord">
+            <text class="iconfont icon-video {{securitySettings.isRecording ? 'recording' : ''}}"></text>
+          </view>
+          <view class="cam-ctrl-btn" bindtap="fullScreen">
+            <text class="iconfont icon-fullscreen"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{deviceInfo.subType === 'lock'}}">
+      <view class="card-title">门锁控制</view>
+      <view class="lock-control">
+        <view class="lock-status {{securitySettings.locked ? 'locked' : 'unlocked'}}">
+          <text class="iconfont icon-{{securitySettings.locked ? 'lock' : 'unlock'}}"></text>
+          <text class="lock-text">{{securitySettings.locked ? '已锁定' : '已解锁'}}</text>
+        </view>
+        <view class="btn-primary" bindtap="toggleLock">
+          {{securitySettings.locked ? '解锁门锁' : '锁定门锁'}}
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">安防模式</view>
+      <view class="security-modes">
+        <view class="sec-mode {{securitySettings.alarmMode === item.value ? 'active' : ''}}" 
+          wx:for="{{securityModes}}" wx:key="value" bindtap="setSecurityMode" data-mode="{{item.value}}">
+          <view class="sec-mode-icon" style="background: {{item.color}}">
+            <text class="iconfont icon-{{item.icon}}"></text>
+          </view>
+          <text class="sec-mode-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">告警记录</view>
+      <view class="alert-list">
+        <view class="alert-item" wx:for="{{securityAlerts}}" wx:key="id">
+          <view class="alert-icon {{item.level}}">
+            <text class="iconfont icon-{{item.level}}"></text>
+          </view>
+          <view class="alert-info">
+            <text class="alert-title">{{item.title}}</text>
+            <text class="alert-time">{{item.time}}</text>
+          </view>
+          <text class="alert-status {{item.handled ? 'handled' : ''}}">{{item.handled ? '已处理' : '待处理'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 传感器数据 -->
+  <view class="control-section" wx:if="{{deviceInfo.type === 'sensor'}}">
+    <view class="card">
+      <view class="card-title">实时数据</view>
+      <view class="sensor-realtime">
+        <view class="sensor-value-large">
+          <text class="value">{{sensorData.value}}</text>
+          <text class="unit">{{sensorData.unit}}</text>
+        </view>
+        <view class="sensor-trend {{sensorData.trend > 0 ? 'up' : 'down'}}">
+          <text class="iconfont icon-{{sensorData.trend > 0 ? 'up' : 'down'}}"></text>
+          <text>{{sensorData.trend > 0 ? '+' : ''}}{{sensorData.trend}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">历史数据</view>
+      <view class="chart-container">
+        <canvas canvas-id="sensorChart" class="sensor-chart"></canvas>
+      </view>
+      <view class="chart-tabs">
+        <view class="chart-tab {{chartRange === 'day' ? 'active' : ''}}" bindtap="setChartRange" data-range="day">今日</view>
+        <view class="chart-tab {{chartRange === 'week' ? 'active' : ''}}" bindtap="setChartRange" data-range="week">本周</view>
+        <view class="chart-tab {{chartRange === 'month' ? 'active' : ''}}" bindtap="setChartRange" data-range="month">本月</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">阈值设置</view>
+      <view class="threshold-setting">
+        <view class="threshold-item">
+          <text class="threshold-label">下限阈值</text>
+          <input class="threshold-input" type="number" value="{{sensorThresholds.min}}" 
+            bindinput="setMinThreshold" />
+          <text class="threshold-unit">{{sensorData.unit}}</text>
+        </view>
+        <view class="threshold-item">
+          <text class="threshold-label">上限阈值</text>
+          <input class="threshold-input" type="number" value="{{sensorThresholds.max}}" 
+            bindinput="setMaxThreshold" />
+          <text class="threshold-unit">{{sensorData.unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

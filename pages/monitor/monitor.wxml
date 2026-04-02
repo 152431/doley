@@ -1,0 +1,163 @@
+<view class="container">
+  <view class="monitor-header">
+    <view class="header-stats">
+      <view class="stat-card">
+        <view class="stat-icon temperature">
+          <text class="iconfont icon-temperature"></text>
+        </view>
+        <view class="stat-info">
+          <text class="stat-label">当前温度</text>
+          <view class="stat-value-row">
+            <text class="stat-value">{{realtimeData.temperature}}</text>
+            <text class="stat-unit">°C</text>
+          </view>
+        </view>
+        <view class="stat-trend {{realtimeData.tempTrend > 0 ? 'up' : 'down'}}">
+          <text class="iconfont icon-{{realtimeData.tempTrend > 0 ? 'up' : 'down'}}"></text>
+        </view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-icon humidity">
+          <text class="iconfont icon-humidity"></text>
+        </view>
+        <view class="stat-info">
+          <text class="stat-label">当前湿度</text>
+          <view class="stat-value-row">
+            <text class="stat-value">{{realtimeData.humidity}}</text>
+            <text class="stat-unit">%</text>
+          </view>
+        </view>
+        <view class="stat-trend {{realtimeData.humidityTrend > 0 ? 'up' : 'down'}}">
+          <text class="iconfont icon-{{realtimeData.humidityTrend > 0 ? 'up' : 'down'}}"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="chart-section card">
+    <view class="section-header">
+      <text class="section-title">环境趋势</text>
+      <view class="chart-tabs">
+        <view class="chart-tab {{chartRange === 'day' ? 'active' : ''}}" bindtap="setChartRange" data-range="day">今日</view>
+        <view class="chart-tab {{chartRange === 'week' ? 'active' : ''}}" bindtap="setChartRange" data-range="week">本周</view>
+        <view class="chart-tab {{chartRange === 'month' ? 'active' : ''}}" bindtap="setChartRange" data-range="month">本月</view>
+      </view>
+    </view>
+    <view class="chart-container">
+      <canvas canvas-id="envChart" class="env-chart"></canvas>
+    </view>
+    <view class="chart-legend">
+      <view class="legend-item">
+        <view class="legend-dot temperature"></view>
+        <text>温度</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-dot humidity"></view>
+        <text>湿度</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="sensor-grid">
+    <view class="sensor-card card" wx:for="{{sensorList}}" wx:key="id" bindtap="goToSensorDetail" data-id="{{item.id}}">
+      <view class="sensor-header">
+        <view class="sensor-icon {{item.type}}">
+          <text class="iconfont icon-{{item.icon}}"></text>
+        </view>
+        <view class="sensor-status {{item.status}}">
+          <text class="status-dot"></text>
+          <text>{{item.statusText}}</text>
+        </view>
+      </view>
+      <view class="sensor-body">
+        <text class="sensor-name">{{item.name}}</text>
+        <view class="sensor-value-row">
+          <text class="sensor-value">{{item.value}}</text>
+          <text class="sensor-unit">{{item.unit}}</text>
+        </view>
+      </view>
+      <view class="sensor-footer">
+        <view class="sensor-range">
+          <text class="range-label">范围:</text>
+          <text class="range-value">{{item.min}} - {{item.max}}{{item.unit}}</text>
+        </view>
+        <view class="sensor-progress">
+          <view class="progress-bar">
+            <view class="progress-fill {{item.warning ? 'warning' : ''}}" style="width: {{item.percent}}%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="alert-section card">
+    <view class="section-header">
+      <text class="section-title">告警信息</text>
+      <text class="more-btn" bindtap="goToAlerts">查看全部</text>
+    </view>
+    <view class="alert-list" wx:if="{{alertList.length > 0}}">
+      <view class="alert-item" wx:for="{{alertList}}" wx:key="id">
+        <view class="alert-icon {{item.level}}">
+          <text class="iconfont icon-{{item.level === 'danger' ? 'danger' : 'warning'}}"></text>
+        </view>
+        <view class="alert-content">
+          <view class="alert-header">
+            <text class="alert-title">{{item.title}}</text>
+            <text class="alert-time">{{item.time}}</text>
+          </view>
+          <text class="alert-desc">{{item.description}}</text>
+          <view class="alert-device">
+            <text class="iconfont icon-device"></text>
+            <text>{{item.deviceName}}</text>
+          </view>
+        </view>
+        <view class="alert-action">
+          <view class="action-btn" bindtap="handleAlert" data-id="{{item.id}}">处理</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty-container" wx:else>
+      <text class="iconfont icon-check-circle"></text>
+      <text class="empty-text">暂无告警信息</text>
+    </view>
+  </view>
+
+  <view class="data-summary card">
+    <view class="section-header">
+      <text class="section-title">数据统计</text>
+    </view>
+    <view class="summary-grid">
+      <view class="summary-item">
+        <text class="summary-value">{{dataSummary.totalDevices}}</text>
+        <text class="summary-label">设备总数</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{dataSummary.activeSensors}}</text>
+        <text class="summary-label">活跃传感器</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{dataSummary.dataPoints}}</text>
+        <text class="summary-label">数据点数</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{dataSummary.alerts}}</text>
+        <text class="summary-label">今日告警</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="quick-monitor card">
+    <view class="section-header">
+      <text class="section-title">快速监控</text>
+    </view>
+    <view class="monitor-grid">
+      <view class="monitor-item" wx:for="{{quickMonitors}}" wx:key="id" bindtap="toggleMonitor" data-id="{{item.id}}">
+        <view class="monitor-icon {{item.type}} {{item.active ? 'active' : ''}}">
+          <text class="iconfont icon-{{item.icon}}"></text>
+        </view>
+        <text class="monitor-name">{{item.name}}</text>
+        <switch checked="{{item.active}}" color="#4a90d9" catchchange="toggleMonitor" data-id="{{item.id}}" />
+      </view>
+    </view>
+  </view>
+</view>

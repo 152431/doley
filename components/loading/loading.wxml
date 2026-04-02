@@ -1,0 +1,8 @@
+<view class="loading-container {{fullscreen ? 'fullscreen' : ''}}">
+  <view class="loading-spinner">
+    <view class="spinner-ring"></view>
+    <view class="spinner-ring"></view>
+    <view class="spinner-ring"></view>
+  </view>
+  <text class="loading-text" wx:if="{{text}}">{{text}}</text>
+</view>

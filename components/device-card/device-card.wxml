@@ -1,0 +1,23 @@
+<view class="device-card {{size}}" bindtap="onTap">
+  <view class="card-header">
+    <view class="device-icon {{device.type}} {{device.isOn ? 'on' : ''}}">
+      <text class="iconfont icon-{{device.type}}"></text>
+    </view>
+    <view class="status-dot {{device.status}}"></view>
+  </view>
+  
+  <view class="card-body">
+    <text class="device-name">{{device.name}}</text>
+    <text class="device-room" wx:if="{{device.room}}">{{device.room}}</text>
+  </view>
+
+  <view class="card-footer">
+    <text class="device-status {{device.status}}">{{statusText}}</text>
+    <switch wx:if="{{showSwitch}}" checked="{{device.isOn}}" color="#4a90d9" catchchange="onSwitchChange" />
+  </view>
+
+  <view class="device-value" wx:if="{{device.value !== undefined}}">
+    <text class="value">{{device.value}}</text>
+    <text class="unit">{{device.unit}}</text>
+  </view>
+</view>
