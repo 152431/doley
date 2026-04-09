@@ -1,6 +1,7 @@
 const app = getApp()
 const { deviceApi, sceneApi, sensorApi } = require('../../api/index')
 const { showToast, showLoading, hideLoading } = require('../../utils/util')
+const voiceControl = require('../../utils/voice-control')
 
 Page({
   data: {
@@ -230,5 +231,16 @@ Page({
       hideLoading()
       showToast('执行成功')
     }
+  },
+
+  // 开始语音控制
+  startVoiceControl() {
+    voiceControl.startListening()
+      .then(result => {
+        showToast(result.result)
+      })
+      .catch(err => {
+        showToast(err.message || '语音控制失败')
+      })
   }
 })

@@ -13,6 +13,9 @@
           <text class="iconfont icon-bell"></text>
           <view class="badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</view>
         </view>
+        <view class="action-btn" bindtap="startVoiceControl">
+          <text class="iconfont icon-mic"></text>
+        </view>
       </view>
     </view>
   </view>
